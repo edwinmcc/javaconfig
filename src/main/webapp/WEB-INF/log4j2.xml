@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="debug" name="FbsApp" packages="">
+  <Appenders>
+    <RollingRandomAccessFile name="appFileLogger" fileName="../logs/app.log" filePattern="logs/$${date:yyyy-MM}/Fbsapp-%d{MM-dd-yyyy}-%i.log.gz">
+      <PatternLayout>
+        <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+      </PatternLayout>
+      <Policies>
+        <TimeBasedTriggeringPolicy />
+        <SizeBasedTriggeringPolicy size="10MB"/>
+      </Policies>
+      <DefaultRolloverStrategy max="20"/>
+    </RollingRandomAccessFile>
+    <!-- <RandomAccessFile name="RandomAccessFile" fileName="logs/app1.log" >
+      <PatternLayout>
+        <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+      </PatternLayout>
+      <Policies>
+        <TimeBasedTriggeringPolicy />
+        <SizeBasedTriggeringPolicy size="10MB"/>
+      <DefaultRolloverStrategy max="20"/>
+      </Policies>
+    </RandomAccessFile>  -->
+    <!-- 
+    	Any parent directories while creating log files will be created, even if it not present.
+    	filePattern - will be logs/yyyy-mm/Fbsapp-MM-dd-yyyy-[0,1,2].log.gz
+     -->
+    <RollingRandomAccessFile name="asyncGuiLogger" fileName="../logs/Fbsapp-gui.log" filePattern="logs/$${date:yyyy-MM}/Fbsapp-gui-%d{MM-dd-yyyy}-%i.log.gz" >
+      <PatternLayout>
+        <Pattern>%d %p %c [%t] %m%n</Pattern>
+      </PatternLayout>
+      <Policies>
+         <!-- 
+         	Files will be rolled over once every day. - A new log file will be created everyday.
+          -->
+      	<TimeBasedTriggeringPolicy interval="24"  modulate="true" />
+      	<!-- 
+      		New log file will be created once the size exceeds 50MB.
+      	 -->
+      	<SizeBasedTriggeringPolicy size="10MB"/>
+      </Policies>
+      <!-- fileIndex - min means - most recent will be in the order foo.log, foo-1.log, foo-2.log, foo-3.log.  The greatest number will be oldest log file.
+           max - upto a maximum of 20 file will be created.
+           compressionLevel - When compressing older log files, 0 - means least compression and 9 - means the best compression
+       -->
+      <DefaultRolloverStrategy fileIndex="min"  max="20" compressionLevel="9" />
+    </RollingRandomAccessFile>
+    <Async name="asyncLogger" blocking="true" bufferSize="500" ignoreExceptions="false" includeLocation="true">
+      <AppenderRef ref="asyncGuiLogger"/>
+    </Async>
+  </Appenders>
+  <Loggers>
+    <logger name="org.springframework" level="DEBUG" additivity="false">
+      <appender-ref ref="STDOUT" />
+      <appender-ref ref="FILE" />
+    </logger>
+    <Logger level="debug" name="appLogger">
+      <AppenderRef ref="appFileLogger"/>
+    </Logger>
+    <Logger level="debug" name="guiLogger">
+      <AppenderRef ref="asyncLogger"/>
+    </Logger>
+  </Loggers>
+</Configuration>

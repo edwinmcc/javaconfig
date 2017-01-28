@@ -1,0 +1,38 @@
+@CHARSET "ISO-8859-1";
+
+#menu ul li:first-child > a {
+    border-radius: 3px 3px 0 0;
+}
+
+#menu ul li:first-child > a:after {
+    content: '';
+    position: absolute;
+    left: 40px;
+    top: -6px;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 6px solid #444;
+}
+
+#menu ul ul li:first-child a:after {
+    left: -6px;
+    top: 50%;
+    margin-top: -6px;
+    border-left: 0; 
+    border-bottom: 6px solid transparent;
+    border-top: 6px solid transparent;
+    border-right: 6px solid #3b3b3b;
+}
+
+#menu ul li:first-child a:hover:after {
+    border-bottom-color: #04acec; 
+}
+
+#menu ul ul li:first-child a:hover:after {
+    border-right-color: #0299d3; 
+    border-bottom-color: transparent;   
+}
+
+#menu ul li:last-child > a {
+    border-radius: 0 0 3px 3px;
+}
