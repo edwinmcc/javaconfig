@@ -13,8 +13,8 @@ import edu.java.web.service.BatchService;
 import edu.java.web.service.BatchServiceImpl;
 import edu.java.web.service.UserService;
 import edu.java.web.service.UserServiceImpl;
+import edu.java.web.util.AppLogger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
@@ -43,6 +43,7 @@ public class RootAppConfig {
 
     @Bean(name="sessionFactory")
     public LocalSessionFactoryBean getSessionFactory() {
+        AppLogger.trace("RootAppCongif.getSessionFactory ...");
         LocalSessionFactoryBean sessionFactoryBean=new LocalSessionFactoryBean();
         sessionFactoryBean.setHibernateProperties(getHibernateProperties());
         sessionFactoryBean.setAnnotatedClasses(
@@ -54,8 +55,12 @@ public class RootAppConfig {
         return sessionFactoryBean;
     }
 
+
+
     public Properties getHibernateProperties() {
+        AppLogger.trace("RootAppConfig.getHibernateProperties ...");
         Properties p=new Properties();
+
         try {
             p.setProperty("hibernate.dialect",env.getProperty("hibernate.dialect"));
             p.setProperty("hibernate.connection.driver_class",env.getProperty("hibernate.connection.driver_class"));
@@ -83,29 +88,34 @@ public class RootAppConfig {
 
     @Bean(name="authenticationProvider")
     public UsernamePasswordAuthenticationProvider authenticationProvider() {
+        AppLogger.trace("RootAppConfig.authenticationProvider ...");
         return new UsernamePasswordAuthenticationProvider();
     }
 
     @Bean(name="customSuccessHandler")
     public CustomSuccessHandler customSuccessHandler() {
+        AppLogger.trace("RootAppConfig.customSuccessHandler ...");
         CustomSuccessHandler customSuccessHandler=new CustomSuccessHandler();
         return customSuccessHandler;
     }
 
     @Bean(name="accessDeniedHandler")
     public CustomAccessDeniedHandler accessDeniedHandler() {
+        AppLogger.trace("RootAppConfig.accessDeniedHandler ...");
         CustomAccessDeniedHandler customAccessDeniedHandler=new CustomAccessDeniedHandler();
         return customAccessDeniedHandler;
     }
 
     @Bean(name="redirectStrategyRef")
     public DefaultRedirectStrategy redirectStrategyRef() {
+        AppLogger.trace("RootAppConfig.redirectStrategyRef ...");
         DefaultRedirectStrategy redirectStrategy=new DefaultRedirectStrategy();
         return redirectStrategy;
     }
 
     @Bean(name="userDetailsService")
     public UserDetailsService userDetailsService() {
+        AppLogger.trace("RootAppConfig.userDetailsService ...");
         return new UserServiceDetailsServiceImpl();
     }
 
